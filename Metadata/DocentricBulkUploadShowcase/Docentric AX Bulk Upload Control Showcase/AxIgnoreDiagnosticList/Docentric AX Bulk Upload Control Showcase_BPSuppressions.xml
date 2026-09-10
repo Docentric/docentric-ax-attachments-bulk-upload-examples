@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IgnoreDiagnostics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!--
+	*************************************************************************************************************************
+	*** START OF XML SCHEMA
+	*************************************************************************************************************************
+	-->
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" id="defaultSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+		<xsd:element name="Name" type="xsd:string" />
+		<xsd:element name="Items">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="Diagnostic">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="DiagnosticType" type="xsd:string" />
+								<xsd:element name="Severity" type="xsd:string" />
+								<xsd:element name="Path" type="xsd:string" />
+								<xsd:element name="Moniker" type="xsd:string" />
+								<xsd:element name="Message" type="xsd:string" />
+								<xsd:element name="Justification" type="xsd:string" />
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+	</xs:schema>
+
+	<!--
+	*************************************************************************************************************************
+	*** START OF XML BODY
+	*************************************************************************************************************************
+	-->
+
+	<Name>DocentricBulkUploadShowcase_BPSuppressions</Name>
+	<Items>
+		<!-- Diagnostic item template
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>(path given in warning message)</Path>
+			<Moniker>(moniker given in error message)</Moniker>
+			<Message>(message displayed by the best practices)</Message>
+			<Justification>(a justification for why you are ignoring this message)</Justification>
+		</Diagnostic>
+		-->
+
+		<!--
+		*************************************************************************************************************************
+		*** Custom form designs
+		*************************************************************************************************************************
+		-->
+
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>dynamics://Form/DocPurchOrderBulkUploadFactBox_DCBU/FormDesign/FormDesign</Path>
+			<Moniker>BPWarningFormDesignOrControlsWithCustomPattern</Moniker>
+			<Message>BPWarningFormDesignOrControlsWithCustomPattern: 'FormDesign' is using the 'Custom' pattern. Please apply one of the other available patterns.</Message>
+			<Justification>The whole content of this FactBox part is the DocBulkFileUploadControl extensible control. No other form part pattern accepts an extensible control as its content, so Custom is the only applicable one. Standard form parts that host a control do the same, for example TrvReceiptPreview.</Justification>
+		</Diagnostic>
+
+		<!--
+		*************************************************************************************************************************
+		*** The duty or the privilege is not referenced on any role.
+		*************************************************************************************************************************
+		-->
+
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>dynamics://SecurityPrivilege/DocentricAXBulkUploadControlShowcaseUser_DCBU</Path>
+			<Moniker>BPErrorPrivilegeNotCoveredByDuty</Moniker>
+			<Message>BPErrorPrivilegeNotCoveredByDuty: The privilege 'DocentricAXBulkUploadControlShowcaseUser_DCBU' is not referenced on any duty.</Message>
+			<Justification>Intentionally not referenced by any duty. Installing the showcase must not hand the FactBox to every user who already holds a Docentric AX or a purchasing duty; whoever installs it grants this privilege deliberately. The Docentric AX model carries unassigned privileges of its own for the same reason.</Justification>
+		</Diagnostic>
+
+		<!--
+		*************************************************************************************************************************
+		*** Parameter not used.
+		*************************************************************************************************************************
+		-->
+
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>dynamics://Class/DocPurchOrderBulkUploadShowcase_DCBU/Method/attachFilesButtonClicked</Path>
+			<Moniker>BPParameterNotUsed</Moniker>
+			<Message>The parameter '_e' is not used.</Message>
+			<Justification>The FormControlEventHandler attribute dictates the signature, so both parameters must be declared. FormControlEventArgs carries no payload for the Clicked event, so '_e' is deliberately not used.</Justification>
+		</Diagnostic>
+
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>dynamics://Class/DocPurchOrderBulkUploadShowcase_DCBU/Method/purchTableInitialized</Path>
+			<Moniker>BPParameterNotUsed</Moniker>
+			<Message>The parameter '_e' is not used.</Message>
+			<Justification>The FormEventHandler attribute dictates the signature, so both parameters must be declared. FormEventArgs carries no payload for the Initialized event, so '_e' is deliberately not used.</Justification>
+		</Diagnostic>
+
+		<Diagnostic>
+			<DiagnosticType>BestPractices</DiagnosticType>
+			<Severity>Warning</Severity>
+			<Path>dynamics://Class/DocProductBulkUploadShowcase_DCBU/Method/productDetailsInitialized</Path>
+			<Moniker>BPParameterNotUsed</Moniker>
+			<Message>The parameter '_e' is not used.</Message>
+			<Justification>The FormEventHandler attribute dictates the signature, so both parameters must be declared. FormEventArgs carries no payload for the Initialized event, so '_e' is deliberately not used.</Justification>
+		</Diagnostic>
+	</Items>
+</IgnoreDiagnostics>

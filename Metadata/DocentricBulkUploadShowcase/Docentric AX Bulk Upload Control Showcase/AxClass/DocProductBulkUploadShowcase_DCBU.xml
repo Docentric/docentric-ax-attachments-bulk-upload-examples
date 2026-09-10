@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DocProductBulkUploadShowcase_DCBU</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Showcase event handler of the Released product details form extension. It supplies the product
+/// image handler instance to the hosted <c>DocBulkFileUploadControl</c> and repaints the Product image
+/// FactBox after a run. This class is a demo host and is not part of the shipped product.
+/// </summary>
+final class DocProductBulkUploadShowcase_DCBU
+{
+    private FormRun hostFormRun;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>productDetailsInitialized</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Called when the Released product details form is initialized. Supplies the product image handler
+    /// instance to the hosted upload control, binds attachment access to the InventTable data source,
+    /// so each uploaded file is registered as a product image, and subscribes to the completion delegate.
+    /// </summary>
+    /// <param name = "_sender">The product details form that was initialized.</param>
+    /// <param name = "_e">The form event arguments.</param>
+    [FormEventHandler(formStr(EcoResProductDetailsExtended), FormEventType::Initialized)]
+    public static void productDetailsInitialized(xFormRun _sender, FormEventArgs _e)
+    {
+        if (!_sender)
+        {
+            return;
+        }
+
+        DocBulkFileUploadControl uploadControl = _sender.design().controlName(
+            formControlStr(EcoResProductDetailsExtended, ProductBulkUploadControl_DCBU)) as DocBulkFileUploadControl;
+
+        if (uploadControl)
+        {
+            uploadControl.setUploadHandler(new DocProductImageBulkUploadHandler_DCBU());
+            uploadControl.setAccessBehavior(DocBulkFileUploadDataSourceAccessBehavior::construct());
+
+            DocProductBulkUploadShowcase_DCBU showcase = DocProductBulkUploadShowcase_DCBU::construct(_sender as FormRun);
+            uploadControl.notifyAllComplete += eventhandler(showcase.onAllComplete);
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>construct</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Creates an instance bound to the running Released product details form.
+    /// </summary>
+    /// <param name = "_hostFormRun">The running Released product details form</param>
+    /// <returns>The new instance</returns>
+    private static DocProductBulkUploadShowcase_DCBU construct(FormRun _hostFormRun)
+    {
+        DocProductBulkUploadShowcase_DCBU showcase = new DocProductBulkUploadShowcase_DCBU();
+        showcase.hostFormRun = _hostFormRun;
+
+        return showcase;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>onAllComplete</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Called when the hosted upload control has finished a batch. Re-reads and refreshes the host
+    /// <c>InventTable</c> data source when at least one file was attached, so the Product image
+    /// FactBox shows the new image.
+    /// </summary>
+    /// <param name = "_contexts">Every file of the finished batch, with its outcome</param>
+    /// <remarks>
+    /// The FactBox is a form part bound to the host cursor, so the host data source is what has to be
+    /// refreshed, not the part.
+    /// </remarks>
+    private void onAllComplete(DocBulkFileUploadContextList _contexts)
+    {
+        FormDataSource hostDataSource;
+
+        if (!_contexts || !_contexts.countAttached())
+        {
+            return;
+        }
+
+        hostDataSource = hostFormRun ? hostFormRun.dataSource(tableStr(InventTable)) : null;
+
+        if (hostDataSource)
+        {
+            hostDataSource.reread();
+            hostDataSource.refresh();
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

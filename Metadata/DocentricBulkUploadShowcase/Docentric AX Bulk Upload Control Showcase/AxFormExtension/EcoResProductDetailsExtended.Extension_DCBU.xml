@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxFormExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V6">
+	<Name>EcoResProductDetailsExtended.Extension_DCBU</Name>
+	<ControlModifications />
+	<Controls>
+		<AxFormExtensionControl xmlns="">
+			<Name>FormExtensionControlProductBulkUpload_DCBU</Name>
+			<FormControl xmlns=""
+				i:type="AxFormTabPageControl">
+				<Name>TabPageBulkUpload_DCBU</Name>
+				<AutoDeclaration>Yes</AutoDeclaration>
+				<HeightMode>SizeToAvailable</HeightMode>
+				<HelpText>Attach many image files at once to the released product.</HelpText>
+				<Pattern>Custom</Pattern>
+				<Type>TabPage</Type>
+				<WidthMode>SizeToAvailable</WidthMode>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl xmlns=""
+						i:type="AxFormGroupControl">
+						<Name>ProductBulkUploadGroup_DCBU</Name>
+						<HeightMode>SizeToAvailable</HeightMode>
+						<Type>Group</Type>
+						<WidthMode>SizeToAvailable</WidthMode>
+						<FormControlExtension
+							i:nil="true" />
+						<Controls>
+							<AxFormControl>
+								<Name>ProductBulkUploadControl_DCBU</Name>
+								<AutoDeclaration>Yes</AutoDeclaration>
+								<HeightMode>SizeToAvailable</HeightMode>
+								<WidthMode>SizeToAvailable</WidthMode>
+								<FormControlExtension>
+									<Name>DocBulkFileUploadControl</Name>
+									<ExtensionComponents />
+									<ExtensionProperties>
+										<AxFormControlExtensionProperty>
+											<Name>docuTypeId</Name>
+											<Type>String</Type>
+											<Value>Image</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileSizeMB</Name>
+											<Type>Real</Type>
+											<Value>0</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileCount</Name>
+											<Type>Int32</Type>
+											<Value>50</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowFolders</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowedExtensions</Name>
+											<Type>String</Type>
+											<Value>.jpg,.jpeg,.png,.gif,.bmp</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxConcurrentUploads</Name>
+											<Type>Int32</Type>
+											<Value>3</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>addInfologEntry</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>refDataSourceName</Name>
+											<Type>String</Type>
+											<Value>InventTable</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>uploadFlow</Name>
+											<Type>Enum</Type>
+											<TypeName>DocBulkFileUploadFlow</TypeName>
+											<Value>CompactUploadOnDrop</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>showInstructionText</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>enableGameCorner</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>hideHeaderWhenEmbedded</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+									</ExtensionProperties>
+								</FormControlExtension>
+							</AxFormControl>
+						</Controls>
+						<FrameType>None</FrameType>
+					</AxFormControl>
+				</Controls>
+				<Caption>Product image attachments upload</Caption>
+			</FormControl>
+			<Parent>TabHeader</Parent>
+		</AxFormExtensionControl>
+	</Controls>
+	<DataSourceModifications />
+	<DataSourceReferences />
+	<DataSources />
+	<Parts />
+	<PropertyModifications />
+</AxFormExtension>

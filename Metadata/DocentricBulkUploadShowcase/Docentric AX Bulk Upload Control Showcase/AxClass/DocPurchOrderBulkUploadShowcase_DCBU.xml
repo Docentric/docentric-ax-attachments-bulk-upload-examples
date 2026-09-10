@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DocPurchOrderBulkUploadShowcase_DCBU</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Showcase event handlers of the Purchase order form extension. They host the "Attach files" header
+/// button and place the two "Attachments upload" tab pages last in their tab. This class is a demo
+/// host and is not part of the shipped product.
+/// </summary>
+final class DocPurchOrderBulkUploadShowcase_DCBU
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>isPurchTableAttachEligible</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Checks whether a purchase order header still accepts new attachments, using the answer of
+    /// <c>checkUpdate</c>.
+    /// </summary>
+    /// <param name = "_purchTable">The purchase order header record.</param>
+    /// <returns>True if the order accepts new attachments; otherwise, false.</returns>
+    /// <remarks>
+    /// The arguments of <c>checkUpdate</c> ask the question silently: no dialog, no infolog warning,
+    /// and a Warning access level treated as Locked.
+    /// </remarks>
+    public static boolean isPurchTableAttachEligible(PurchTable _purchTable)
+    {
+        return _purchTable
+            && _purchTable.RecId
+            && _purchTable.checkUpdate(false, false, true);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>attachFilesButtonClicked</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Called when the "Attach files" header button is clicked. Opens the Bulk upload dialog for the
+    /// current purchase order header, and tells it whether that order still accepts new attachments.
+    /// </summary>
+    /// <param name = "_sender">The button that was clicked.</param>
+    /// <param name = "_e">The control event arguments.</param>
+    [FormControlEventHandler(formControlStr(PurchTable, AttachFilesButton_DCBU), FormControlEventType::Clicked)]
+    public static void attachFilesButtonClicked(FormControl _sender, FormControlEventArgs _e)
+    {
+        FormRun formRun = _sender.formRun();
+        if (!formRun)
+        {
+            return;
+        }
+
+        FormDataSource purchTableDs = formRun.dataSource(formDataSourceStr(PurchTable, PurchTable)) as FormDataSource;
+        PurchTable     purchTable   = purchTableDs ? purchTableDs.cursor() : null;
+
+        if (!purchTable || !purchTable.RecId)
+        {
+            DocGlobalHelper::handleWarning("@SYS94694"); // The record no longer exists.
+            return;
+        }
+
+        DocBulkFileUploadHelper::openBulkUploadDialog(
+            tableNum(PurchTable), purchTable.RecId, purchTable.DataAreaId, formRun,
+            DocPurchOrderBulkUploadShowcase_DCBU::isPurchTableAttachEligible(purchTable));
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>purchTableInitialized</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Called when the purchase order form is initialized. Moves both "Attachments upload" tab pages
+    /// last in the tab they live in.
+    /// </summary>
+    /// <param name = "_sender">The purchase order form that was initialized.</param>
+    /// <param name = "_e">The form event arguments.</param>
+    /// <remarks>
+    /// A form extension can only append a tab page, so the final order depends on which other modules
+    /// are installed and cannot be declared in metadata.
+    /// </remarks>
+    [FormEventHandler(formStr(PurchTable), FormEventType::Initialized)]
+    public static void purchTableInitialized(xFormRun _sender, FormEventArgs _e)
+    {
+        if (!_sender)
+        {
+            return;
+        }
+
+        FormDesign design = _sender.design();
+
+        DocPurchOrderBulkUploadShowcase_DCBU::moveTabPageLast(design,
+            formControlStr(PurchTable, HeaderDetailsTab), formControlStr(PurchTable, TabHeaderBulkUpload_DCBU));
+
+        DocPurchOrderBulkUploadShowcase_DCBU::moveTabPageLast(design,
+            formControlStr(PurchTable, LineDetailsTab), formControlStr(PurchTable, TabLineBulkUpload_DCBU));
+
+        // Each placement follows its own owner data source, named in the control's build, so it accepts
+        // attachments only while its own record is editable.
+        DocPurchOrderBulkUploadShowcase_DCBU::installDataSourceBehavior(design,
+            formControlStr(PurchTable, HeaderBulkUploadControl_DCBU));
+
+        DocPurchOrderBulkUploadShowcase_DCBU::installDataSourceBehavior(design,
+            formControlStr(PurchTable, LineBulkUploadControl_DCBU));
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>installDataSourceBehavior</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Installs a data-source access behavior on a hosted upload control. A control that is not present
+    /// is skipped.
+    /// </summary>
+    /// <param name = "_design">The design of the running form.</param>
+    /// <param name = "_controlName">The name of the hosted upload control.</param>
+    /// <remarks>
+    /// The behavior follows the control's own owner data source, named in the control's build, so no data
+    /// source name is passed here.
+    /// </remarks>
+    private static void installDataSourceBehavior(FormDesign _design, str _controlName)
+    {
+        DocBulkFileUploadControl uploadControl = _design.controlName(_controlName) as DocBulkFileUploadControl;
+
+        if (uploadControl)
+        {
+            uploadControl.setAccessBehavior(DocBulkFileUploadDataSourceAccessBehavior::construct());
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>moveTabPageLast</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Moves a tab page behind the last page of its tab control. A control that is not present is
+    /// skipped.
+    /// </summary>
+    /// <param name = "_design">The design of the running form.</param>
+    /// <param name = "_tabControlName">The name of the tab control that owns the page.</param>
+    /// <param name = "_tabPageName">The name of the tab page to move.</param>
+    private static void moveTabPageLast(FormDesign _design, str _tabControlName, str _tabPageName)
+    {
+        FormTabControl tabControl = _design.controlName(_tabControlName) as FormTabControl;
+        FormControl    tabPage    = _design.controlName(_tabPageName);
+
+        if (!tabControl || !tabPage)
+        {
+            return;
+        }
+
+        // controlNum() is one-based, so the last sibling is at controlCount().
+        FormControl lastTabPage = tabControl.controlNum(tabControl.controlCount());
+
+        if (lastTabPage && lastTabPage.id() != tabPage.id())
+        {
+            tabControl.moveControl(tabPage.id(), lastTabPage.id());
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

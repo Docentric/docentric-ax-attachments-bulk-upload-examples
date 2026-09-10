@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FC65038C-1B2F-41E1-A629-BED71D161FFF}") = "DocBulkFileUploadShowcase (USR) [Docentric AX Bulk Upload Control Showcase]", "DocBulkFileUploadShowcase\DocBulkFileUploadShowcase.rnrproj", "{450F35E2-3A91-4817-BB5F-DCEAAAED83B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{450F35E2-3A91-4817-BB5F-DCEAAAED83B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{450F35E2-3A91-4817-BB5F-DCEAAAED83B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0CAC8598-A6C3-4507-B768-5382AF74C35A}
+	EndGlobalSection
+EndGlobal

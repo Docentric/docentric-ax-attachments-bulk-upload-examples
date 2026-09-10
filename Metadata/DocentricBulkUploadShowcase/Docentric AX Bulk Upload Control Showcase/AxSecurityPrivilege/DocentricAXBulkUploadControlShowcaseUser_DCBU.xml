@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxSecurityPrivilege xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DocentricAXBulkUploadControlShowcaseUser_DCBU</Name>
+	<Description>@DocentricBulkUploadShowcase:BulkUploadControlShowcaseUserPrivilegeDescription</Description>
+	<Label>@DocentricBulkUploadShowcase:BulkUploadControlShowcaseUserPrivilege</Label>
+	<DataEntityPermissions />
+	<DirectAccessPermissions />
+	<EntryPoints>
+		<AxSecurityEntryPointReference>
+			<Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+			<Grant>
+				<Read>Allow</Read>
+			</Grant>
+			<ObjectName>DocPurchOrderBulkUploadFactBox_DCBU</ObjectName>
+			<ObjectType>MenuItemDisplay</ObjectType>
+			<Forms>
+				<AxSecurityEntryPointReferenceForm>
+					<Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+					<Controls />
+					<DataSources />
+				</AxSecurityEntryPointReferenceForm>
+			</Forms>
+		</AxSecurityEntryPointReference>
+	</EntryPoints>
+	<FormControlOverrides />
+</AxSecurityPrivilege>

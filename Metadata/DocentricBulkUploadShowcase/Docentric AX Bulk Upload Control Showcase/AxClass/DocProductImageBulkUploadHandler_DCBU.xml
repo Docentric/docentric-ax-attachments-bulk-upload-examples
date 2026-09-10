@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DocProductImageBulkUploadHandler_DCBU</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Showcase handler that registers files uploaded to a product as product images. A bulk upload
+/// creates plain attachments only, so the handler adds the <c>EcoResProductImage</c> record that turns
+/// an attachment into a product image. This class is a demo host and is not part of the shipped
+/// product.
+/// </summary>
+final class DocProductImageBulkUploadHandler_DCBU implements IDocBulkFileUploadHandler
+{
+    // File extensions a product image can be built from. The platform renders the thumbnail with
+    // System.Drawing, whose decoders read only these formats; any other file gets an empty thumbnail.
+    private const str ProductImageExtensions = 'bmp,gif,jpg,jpeg,png,tif,tiff';
+
+    // Separator of the list above, and the one it is shown with to a user.
+    private const str ExtensionSeparator = ',';
+    private const str ExtensionListSeparator = ', ';
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>processAttachment</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Registers one uploaded file as a product image, the same way the standard "Add image" button
+    /// does. A file on a record that is not a product, of a file type that cannot become an image, or
+    /// already registered stays a plain attachment.
+    /// </summary>
+    /// <param name = "_context">Detail of the file just uploaded by the control, with its attachment.</param>
+    public void processAttachment(DocBulkFileUploadContext _context)
+    {
+        DocuRef docuRef = _context.parmDocuRef();
+
+        if (!DocProductImageBulkUploadHandler_DCBU::isProductOwner(docuRef))
+        {
+            return;
+        }
+
+        EcoResProductImage existingProductImage;
+        select firstonly RecId from existingProductImage
+            where existingProductImage.RefRecId == docuRef.RecId;
+
+        if (existingProductImage.RecId)
+        {
+            return;
+        }
+
+        // DocuValue.FileType is the file extension without its leading dot.
+        DocuValue docuValue     = docuRef.docuValue();
+        str       fileExtension = strLwr(docuValue.FileType);
+
+        if (conFind(str2con(ProductImageExtensions, ExtensionSeparator), fileExtension) == 0)
+        {
+            DocGlobalHelper::handleWarning(strFmt("@DocentricBulkUploadShowcase:ProductImageFileTypeNotSupported",
+                docuValue.OriginalFileName,
+                fileExtension,
+                strReplace(ProductImageExtensions, ExtensionSeparator, ExtensionListSeparator)));
+            return;
+        }
+
+        EcoResProductImage::create(docuRef);
+
+        DocProductImageBulkUploadHandler_DCBU::normalizeDefaultImage(docuRef);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>isProductOwner</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Checks whether the attachment belongs to a record that can carry product images.
+    /// These are a released product, a product master and a product variant.
+    /// </summary>
+    /// <param name = "_docuRef">The attachment to inspect.</param>
+    /// <returns>True if the owner record can carry product images; otherwise, false.</returns>
+    private static boolean isProductOwner(DocuRef _docuRef)
+    {
+        return _docuRef.RefTableId == tableNum(InventTable)
+            || _docuRef.RefTableId == tableNum(EcoResProduct)
+            || _docuRef.RefTableId == tableNum(InventDimCombination);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>normalizeDefaultImage</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Leaves the owner record with exactly one default product image, the oldest of the flagged ones.
+    /// </summary>
+    /// <param name = "_docuRef">The attachment whose owner record is normalized.</param>
+    /// <remarks>
+    /// Files are uploaded concurrently, so two of them can each find no default image and flag their
+    /// own. An owner with two default images fails the validation of the standard Product images form.
+    /// </remarks>
+    private static void normalizeDefaultImage(DocuRef _docuRef)
+    {
+        EcoResProductImage productImage;
+        DocuRef            ownerDocuRef;
+
+        // The owner is addressed by root table id, RecId and legal entity, never by RecId alone.
+        select firstonly RecId from productImage
+            order by RecId
+            where productImage.DefaultImage == NoYes::Yes
+            exists join ownerDocuRef
+                where ownerDocuRef.RecId        == productImage.RefRecId
+                   && ownerDocuRef.RefTableId   == _docuRef.RefTableId
+                   && ownerDocuRef.RefRecId     == _docuRef.RefRecId
+                   && ownerDocuRef.RefCompanyId == _docuRef.RefCompanyId;
+
+        if (productImage.RecId)
+        {
+            EcoResProductImage::updateDefault(
+                _docuRef.RefRecId, _docuRef.RefTableId, _docuRef.RefCompanyId, productImage.RecId);
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

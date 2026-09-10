@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxForm xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V6">
+	<Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+	<SourceCode>
+		<Methods xmlns="">
+			<Method>
+				<Name>classDeclaration</Name>
+				<Source><![CDATA[
+/// <summary>
+/// Showcase FactBox part that hosts <c>DocBulkFileUploadControl</c> in the Related information pane of
+/// the Purchase order form. The control attaches files to the current purchase order header and runs
+/// the compact upload-on-drop flow. This form is a demo host and is not part of the shipped product.
+/// </summary>
+[Form]
+public class DocPurchOrderBulkUploadFactBox_DCBU extends FormRun
+{
+}
+]]></Source>
+			</Method>
+			<Method>
+				<Name>openAllAttachments_DCBU</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Opens the standard Attachments page for the purchase order header this FactBox is bound to.
+    /// </summary>
+    private void openAllAttachments_DCBU()
+    {
+        PurchTable hostPurchTable = this.getHostPurchTable_DCBU();
+
+        // Without a resolved host the platform shows the empty "Attachments for Unlinked" grid.
+        if (!hostPurchTable || !hostPurchTable.RecId)
+        {
+            DocGlobalHelper::handleWarning("@SYS94694"); // The record no longer exists.
+            return;
+        }
+
+        DocuRef lookupDocuRef;
+        lookupDocuRef.RefTableId   = DocuRef::GetRootTableID(tableNum(PurchTable));
+        lookupDocuRef.RefRecId     = hostPurchTable.RecId;
+        lookupDocuRef.RefCompanyId = hostPurchTable.DataAreaId;
+
+        // DocuView.init() refuses to open when a view is already registered for the session.
+        if (Docu::Instance() && Docu::Instance().docuView())
+        {
+            Docu::Instance().clearDocuView();
+        }
+
+        Args args = new Args();
+        args.lookupRecord(lookupDocuRef);
+
+        new MenuFunction(menuItemDisplayStr(DocuView), MenuItemType::Display).run(args);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getHostPurchTable_DCBU</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Returns the purchase order header record the FactBox is bound to, read from the cursor of the
+    /// PurchTable data source. Falls back to the record the host form passed to this part.
+    /// </summary>
+    /// <returns>The host purchase order header record, or an empty buffer if it cannot be resolved.</returns>
+    /// <remarks>
+    /// The auto-declared PurchTable buffer must not be used here: on the list page preview its RecId can
+    /// still be 0.
+    /// </remarks>
+    private PurchTable getHostPurchTable_DCBU()
+    {
+        FormDataSource purchTableDs = this.dataSource(formDataSourceStr(DocPurchOrderBulkUploadFactBox_DCBU, PurchTable)) as FormDataSource;
+        PurchTable     hostPurchTable = purchTableDs ? purchTableDs.cursor() : null;
+
+        if (hostPurchTable && hostPurchTable.RecId)
+        {
+            return hostPurchTable;
+        }
+
+        // Fallback: the record the host form passed to this FactBox part.
+        if (this.args() && this.args().record() && this.args().record().TableId == tableNum(PurchTable))
+        {
+            return this.args().record();
+        }
+
+        return hostPurchTable;
+    }
+]]></Source>
+			</Method>
+		</Methods>
+		<DataSources xmlns="">
+			<DataSource>
+				<Name>PurchTable</Name>
+				<Methods>
+					<Method>
+						<Name>active</Name>
+						<Source><![CDATA[
+        /// <summary>
+        /// Called when another purchase order becomes the current record. Tells the embedded upload
+        /// control whether that order still accepts new attachments.
+        /// </summary>
+        /// <returns>The status returned by the super() call.</returns>
+        /// <remarks>
+        /// The data source is display-only, so a data-source behavior would block every order. The
+        /// eligibility is resolved from the order's business state and installed as a fixed behavior.
+        /// </remarks>
+        public int active()
+        {
+            int ret = super();
+
+            PurchTable purchTableRecord = this.cursor();
+            if (FactBoxBulkUploadControl_DCBU && purchTableRecord && purchTableRecord.RecId)
+            {
+                FactBoxBulkUploadControl_DCBU.setAccessBehavior(
+                    DocBulkFileUploadFixedAccessBehavior::construct(
+                        DocPurchOrderBulkUploadShowcase_DCBU::isPurchTableAttachEligible(purchTableRecord)));
+            }
+
+            return ret;
+        }
+]]></Source>
+					</Method>
+				</Methods>
+				<Fields />
+			</DataSource>
+		</DataSources>
+		<DataControls xmlns="">
+			<Control>
+				<Name>ViewAllAttachmentsButton_DCBU</Name>
+				<Type>Button</Type>
+				<Methods>
+					<Method>
+						<Name>clicked</Name>
+						<Source><![CDATA[
+        /// <summary>
+        /// Opens the standard Attachments grid for the host purchase order header.
+        /// </summary>
+        public void clicked()
+        {
+            super();
+            element.openAllAttachments_DCBU();
+        }
+]]></Source>
+					</Method>
+				</Methods>
+			</Control>
+		</DataControls>
+	</SourceCode>
+	<DataSources>
+		<AxFormDataSource xmlns="">
+			<Name>PurchTable</Name>
+			<Table>PurchTable</Table>
+			<Fields />
+			<AllowCreate>No</AllowCreate>
+			<AllowDelete>No</AllowDelete>
+			<AllowEdit>No</AllowEdit>
+			<InsertIfEmpty>No</InsertIfEmpty>
+		</AxFormDataSource>
+	</DataSources>
+	<Design>
+		<Caption xmlns="">@DocentricBulkUploadShowcase:PurchaseOrderFactBoxCaption</Caption>
+		<HeightMode xmlns="">SizeToContent</HeightMode>
+		<Pattern xmlns="">Custom</Pattern>
+		<Style xmlns="">FormPart</Style>
+		<ViewEditMode xmlns="">Edit</ViewEditMode>
+		<WidthMode xmlns="">SizeToAvailable</WidthMode>
+		<Controls xmlns="">
+			<AxFormControl xmlns=""
+				i:type="AxFormGroupControl">
+				<Name>BulkUploadFactBoxGroup_DCBU</Name>
+				<HeightMode>SizeToAvailable</HeightMode>
+				<Type>Group</Type>
+				<WidthMode>SizeToAvailable</WidthMode>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl>
+						<Name>FactBoxBulkUploadControl_DCBU</Name>
+						<AutoDeclaration>Yes</AutoDeclaration>
+						<HeightMode>SizeToAvailable</HeightMode>
+						<WidthMode>SizeToAvailable</WidthMode>
+						<FormControlExtension>
+							<Name>DocBulkFileUploadControl</Name>
+							<ExtensionComponents />
+							<ExtensionProperties>
+								<AxFormControlExtensionProperty>
+									<Name>docuTypeId</Name>
+									<Type>String</Type>
+									<Value>File</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>maxFileSizeMB</Name>
+									<Type>Real</Type>
+									<Value>0</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>maxFileCount</Name>
+									<Type>Int32</Type>
+									<Value>50</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>allowFolders</Name>
+									<Type>Enum</Type>
+									<TypeName>NoYes</TypeName>
+									<Value>Yes</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>allowedExtensions</Name>
+									<Type>String</Type>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>maxConcurrentUploads</Name>
+									<Type>Int32</Type>
+									<Value>3</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>addInfologEntry</Name>
+									<Type>Enum</Type>
+									<TypeName>NoYes</TypeName>
+									<Value>Yes</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>refDataSourceName</Name>
+									<Type>String</Type>
+									<Value>PurchTable</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>uploadFlow</Name>
+									<Type>Enum</Type>
+									<TypeName>DocBulkFileUploadFlow</TypeName>
+									<Value>CompactUploadOnDrop</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>showInstructionText</Name>
+									<Type>Enum</Type>
+									<TypeName>NoYes</TypeName>
+									<Value>No</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>enableGameCorner</Name>
+									<Type>Enum</Type>
+									<TypeName>NoYes</TypeName>
+									<Value>No</Value>
+								</AxFormControlExtensionProperty>
+								<AxFormControlExtensionProperty>
+									<Name>hideHeaderWhenEmbedded</Name>
+									<Type>Enum</Type>
+									<TypeName>NoYes</TypeName>
+									<Value>Yes</Value>
+								</AxFormControlExtensionProperty>
+							</ExtensionProperties>
+						</FormControlExtension>
+					</AxFormControl>
+					<AxFormControl xmlns=""
+						i:type="AxFormButtonControl">
+						<Name>ViewAllAttachmentsButton_DCBU</Name>
+						<AutoDeclaration>Yes</AutoDeclaration>
+						<HelpText>@DocentricBulkUploadShowcase:ViewAllAttachmentsButtonHelpText</HelpText>
+						<Type>Button</Type>
+						<FormControlExtension
+							i:nil="true" />
+						<NormalImage>ViewAll</NormalImage>
+						<Text>@DocentricBulkUploadShowcase:ViewAllAttachmentsButtonLabel</Text>
+					</AxFormControl>
+				</Controls>
+				<FrameType>None</FrameType>
+			</AxFormControl>
+		</Controls>
+	</Design>
+	<Parts />
+</AxForm>

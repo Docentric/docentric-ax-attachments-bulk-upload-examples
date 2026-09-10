@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <BuildTasksDirectory Condition=" '$(BuildTasksDirectory)' == ''">$(MSBuildProgramFiles32)\MSBuild\Microsoft\Dynamics\AX</BuildTasksDirectory>
+    <Model>Docentric AX Bulk Upload Control Showcase</Model>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <OutputPath>bin</OutputPath>
+    <SchemaVersion>2.0</SchemaVersion>
+    <GenerateCrossReferences>True</GenerateCrossReferences>
+    <RunAppCheckerRules>False</RunAppCheckerRules>
+    <LogAppcheckerDiagsAsErrors>False</LogAppcheckerDiagsAsErrors>
+    <DeployOnline>False</DeployOnline>
+    <ProjectGuid>{450f35e2-3a91-4817-bb5f-dceaaaed83b9}</ProjectGuid>
+    <Name>DocBulkFileUploadShowcase</Name>
+    <RootNamespace>DocBulkFileUploadShowcase</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Configuration>Debug</Configuration>
+    <DBSyncInBuild>False</DBSyncInBuild>
+    <GenerateFormAdaptors>False</GenerateFormAdaptors>
+    <Company>
+    </Company>
+    <Partition>initial</Partition>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DataEntityExpandParentChildRelations>False</DataEntityExpandParentChildRelations>
+    <DataEntityUseLabelTextAsFieldName>False</DataEntityUseLabelTextAsFieldName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="AxClass\DocProductBulkUploadShowcase_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocProductBulkUploadShowcase_DCBU</Name>
+      <Link>Classes\DocProductBulkUploadShowcase_DCBU</Link>
+    </Content>
+    <Content Include="AxClass\DocProductImageBulkUploadHandler_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocProductImageBulkUploadHandler_DCBU</Name>
+      <Link>Classes\DocProductImageBulkUploadHandler_DCBU</Link>
+    </Content>
+    <Content Include="AxClass\DocPurchOrderBulkUploadShowcase_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocPurchOrderBulkUploadShowcase_DCBU</Name>
+      <Link>Classes\DocPurchOrderBulkUploadShowcase_DCBU</Link>
+    </Content>
+    <Content Include="AxFormExtension\EcoResProductDetailsExtended.Extension_DCBU">
+      <SubType>Content</SubType>
+      <Name>EcoResProductDetailsExtended.Extension_DCBU</Name>
+      <Link>FormExtension\EcoResProductDetailsExtended.Extension_DCBU</Link>
+    </Content>
+    <Content Include="AxFormExtension\PurchTable.Extension_DCBU">
+      <SubType>Content</SubType>
+      <Name>PurchTable.Extension_DCBU</Name>
+      <Link>FormExtension\PurchTable.Extension_DCBU</Link>
+    </Content>
+    <Content Include="AxForm\DocPurchOrderBulkUploadFactBox_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+      <Link>Form\DocPurchOrderBulkUploadFactBox_DCBU</Link>
+    </Content>
+    <Content Include="AxLabelFile\DocentricBulkUploadShowcase_en-US">
+      <SubType>Content</SubType>
+      <Name>DocentricBulkUploadShowcase_en-US</Name>
+      <Link>Labels\DocentricBulkUploadShowcase_en-US</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\DocPurchOrderBulkUploadFactBox_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+      <Link>MenuItems\Display\DocPurchOrderBulkUploadFactBox_DCBU</Link>
+    </Content>
+    <Content Include="AxSecurityPrivilege\DocentricAXBulkUploadControlShowcaseUser_DCBU">
+      <SubType>Content</SubType>
+      <Name>DocentricAXBulkUploadControlShowcaseUser_DCBU</Name>
+      <Link>Security\Privileges\DocentricAXBulkUploadControlShowcaseUser_DCBU</Link>
+    </Content>
+    <Content Include="DocentricBulkUploadShowcase.en-US.label.txt">
+      <SubType>Content</SubType>
+      <Name>DocentricBulkUploadShowcase.en-US.label.txt</Name>
+      <DependentUpon>AxLabelFile\DocentricBulkUploadShowcase_en-US</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Labels" />
+    <Folder Include="Classes" />
+    <Folder Include="Form" />
+    <Folder Include="FormExtension" />
+    <Folder Include="MenuItems" />
+    <Folder Include="MenuItems\Display" />
+    <Folder Include="Security" />
+    <Folder Include="Security\Privileges" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Import Project="$(BuildTasksDirectory)\Microsoft.Dynamics.Framework.Tools.BuildTasks.17.0.targets" />
+</Project>

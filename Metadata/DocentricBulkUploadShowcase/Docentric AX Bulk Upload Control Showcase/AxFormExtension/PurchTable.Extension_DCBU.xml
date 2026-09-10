@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxFormExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V6">
+	<Name>PurchTable.Extension_DCBU</Name>
+	<ControlModifications />
+	<Controls>
+		<AxFormExtensionControl xmlns="">
+			<Name>FormExtensionControlBulkUploadButtonGroup_DCBU</Name>
+			<FormControl xmlns=""
+				i:type="AxFormButtonGroupControl">
+				<Name>BulkUploadButtonGroup_DCBU</Name>
+				<Type>ButtonGroup</Type>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl xmlns=""
+						i:type="AxFormButtonControl">
+						<Name>AttachFilesButton_DCBU</Name>
+						<AutoDeclaration>Yes</AutoDeclaration>
+						<HelpText>Opens the attachments upload dialog for the current purchase order header.</HelpText>
+						<Type>Button</Type>
+						<FormControlExtension
+							i:nil="true" />
+						<Big>Yes</Big>
+						<NormalImage>2337</NormalImage>
+						<Text>Attach files</Text>
+					</AxFormControl>
+				</Controls>
+				<Caption>Attachments upload</Caption>
+			</FormControl>
+			<Parent>PurchOrder</Parent>
+		</AxFormExtensionControl>
+		<AxFormExtensionControl xmlns="">
+			<Name>FormExtensionControlLineBulkUpload_DCBU</Name>
+			<FormControl xmlns=""
+				i:type="AxFormTabPageControl">
+				<Name>TabLineBulkUpload_DCBU</Name>
+				<AutoDeclaration>Yes</AutoDeclaration>
+				<HeightMode>SizeToAvailable</HeightMode>
+				<HelpText>Attach many files at once to the selected purchase order line. This placement is limited to 10 MB per file and to the .pdf, .docx, .xlsx, .jpg and .png file types.</HelpText>
+				<Pattern>Custom</Pattern>
+				<Type>TabPage</Type>
+				<WidthMode>SizeToAvailable</WidthMode>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl xmlns=""
+						i:type="AxFormGroupControl">
+						<Name>LineBulkUploadGroup_DCBU</Name>
+						<HeightMode>SizeToAvailable</HeightMode>
+						<Type>Group</Type>
+						<WidthMode>SizeToAvailable</WidthMode>
+						<FormControlExtension
+							i:nil="true" />
+						<Controls>
+							<AxFormControl>
+								<Name>LineBulkUploadControl_DCBU</Name>
+								<AutoDeclaration>Yes</AutoDeclaration>
+								<HeightMode>SizeToAvailable</HeightMode>
+								<WidthMode>SizeToAvailable</WidthMode>
+								<FormControlExtension>
+									<Name>DocBulkFileUploadControl</Name>
+									<ExtensionComponents />
+									<ExtensionProperties>
+										<AxFormControlExtensionProperty>
+											<Name>docuTypeId</Name>
+											<Type>String</Type>
+											<Value>File</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileSizeMB</Name>
+											<Type>Real</Type>
+											<Value>10</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileCount</Name>
+											<Type>Int32</Type>
+											<Value>50</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowFolders</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowedExtensions</Name>
+											<Type>String</Type>
+											<Value>.pdf,.docx,.xlsx,.jpg,.png</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxConcurrentUploads</Name>
+											<Type>Int32</Type>
+											<Value>3</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>addInfologEntry</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>refDataSourceName</Name>
+											<Type>String</Type>
+											<Value>PurchLine</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>uploadFlow</Name>
+											<Type>Enum</Type>
+											<TypeName>DocBulkFileUploadFlow</TypeName>
+											<Value>ReviewBeforeUpload</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>showInstructionText</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>enableGameCorner</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>hideHeaderWhenEmbedded</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+									</ExtensionProperties>
+								</FormControlExtension>
+							</AxFormControl>
+						</Controls>
+						<FrameType>None</FrameType>
+					</AxFormControl>
+				</Controls>
+				<Caption>Attachments upload</Caption>
+			</FormControl>
+			<Parent>LineDetailsTab</Parent>
+		</AxFormExtensionControl>
+		<AxFormExtensionControl xmlns="">
+			<Name>FormExtensionControlHeaderBulkUpload_DCBU</Name>
+			<FormControl xmlns=""
+				i:type="AxFormTabPageControl">
+				<Name>TabHeaderBulkUpload_DCBU</Name>
+				<AutoDeclaration>Yes</AutoDeclaration>
+				<HeightMode>SizeToAvailable</HeightMode>
+				<HelpText>Attach many files at once to the purchase order header. This placement adds no limits of its own, so only the Document management parameters apply.</HelpText>
+				<Pattern>Custom</Pattern>
+				<Type>TabPage</Type>
+				<WidthMode>SizeToAvailable</WidthMode>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl xmlns=""
+						i:type="AxFormGroupControl">
+						<Name>HeaderBulkUploadGroup_DCBU</Name>
+						<HeightMode>SizeToAvailable</HeightMode>
+						<Type>Group</Type>
+						<WidthMode>SizeToAvailable</WidthMode>
+						<FormControlExtension
+							i:nil="true" />
+						<Controls>
+							<AxFormControl>
+								<Name>HeaderBulkUploadControl_DCBU</Name>
+								<AutoDeclaration>Yes</AutoDeclaration>
+								<HeightMode>SizeToAvailable</HeightMode>
+								<WidthMode>SizeToAvailable</WidthMode>
+								<FormControlExtension>
+									<Name>DocBulkFileUploadControl</Name>
+									<ExtensionComponents />
+									<ExtensionProperties>
+										<AxFormControlExtensionProperty>
+											<Name>docuTypeId</Name>
+											<Type>String</Type>
+											<Value>File</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileSizeMB</Name>
+											<Type>Real</Type>
+											<Value>0</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxFileCount</Name>
+											<Type>Int32</Type>
+											<Value>50</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowFolders</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>allowedExtensions</Name>
+											<Type>String</Type>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>maxConcurrentUploads</Name>
+											<Type>Int32</Type>
+											<Value>3</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>addInfologEntry</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>refDataSourceName</Name>
+											<Type>String</Type>
+											<Value>PurchTable</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>uploadFlow</Name>
+											<Type>Enum</Type>
+											<TypeName>DocBulkFileUploadFlow</TypeName>
+											<Value>ReviewBeforeUpload</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>showInstructionText</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>enableGameCorner</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>No</Value>
+										</AxFormControlExtensionProperty>
+										<AxFormControlExtensionProperty>
+											<Name>hideHeaderWhenEmbedded</Name>
+											<Type>Enum</Type>
+											<TypeName>NoYes</TypeName>
+											<Value>Yes</Value>
+										</AxFormControlExtensionProperty>
+									</ExtensionProperties>
+								</FormControlExtension>
+							</AxFormControl>
+						</Controls>
+						<FrameType>None</FrameType>
+					</AxFormControl>
+				</Controls>
+				<Caption>Attachments upload</Caption>
+			</FormControl>
+			<Parent>HeaderDetailsTab</Parent>
+		</AxFormExtensionControl>
+	</Controls>
+	<DataSourceModifications />
+	<DataSourceReferences />
+	<DataSources />
+	<Parts>
+		<AxFormExtensionPartReference xmlns="">
+			<Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+			<FormPartReference>
+				<Name>DocPurchOrderBulkUploadFactBox_DCBU</Name>
+				<DataSource>PurchTable</DataSource>
+				<DataSourceRelation>EDT.PurchTable.PurchId</DataSourceRelation>
+				<MenuItemName>DocPurchOrderBulkUploadFactBox_DCBU</MenuItemName>
+				<RunMode>Remote</RunMode>
+			</FormPartReference>
+		</AxFormExtensionPartReference>
+	</Parts>
+	<PropertyModifications />
+</AxFormExtension>

@@ -1,0 +1,12 @@
+BulkUploadControlShowcaseUserPrivilege=Docentric AX Bulk Upload Control Showcase User
+ ;Name of the security privilege that grants a user the showcase FactBox of the Purchase order form
+BulkUploadControlShowcaseUserPrivilegeDescription=Grants access to the Attachments upload FactBox of the Purchase order form, the showcase placement that hosts the Docentric bulk file upload control; attaching files with it also requires the standard permissions to attach documents to a purchase order
+ ;Description of the Docentric AX Bulk Upload Control Showcase User privilege; no closing period, a label may not end with one
+ProductImageFileTypeNotSupported=%1 is attached but cannot be used as a product image. The '%2' file type is not an allowed image format. Supported file types: %3.
+ ;Bulk upload showcase, product images - warning shown when an uploaded file stays a plain attachment because its file type cannot become a product image (%1 = file name, %2 = file extension without its leading dot, %3 = list of the supported file types)
+PurchaseOrderFactBoxCaption=Attachments upload
+ ;Bulk upload showcase, purchase order - caption of the FactBox that hosts the bulk upload control
+ViewAllAttachmentsButtonHelpText=Opens the standard Attachments grid for the current purchase order header.
+ ;Bulk upload showcase, purchase order FactBox - tooltip of the View all attachments button
+ViewAllAttachmentsButtonLabel=View all attachments
+ ;Bulk upload showcase, purchase order FactBox - text of the button that opens the standard Attachments page
