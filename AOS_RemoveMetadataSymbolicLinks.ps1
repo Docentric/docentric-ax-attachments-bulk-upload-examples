@@ -79,14 +79,12 @@ foreach ($ModelFolder in $RepoModelFolders)
     ## The full destination path
     $AOSModulePath = [System.IO.Path]::Combine($AOSMetadataPath, $ModelFolder)
     if (Test-Path $AOSModulePath) {
-        (Get-Item "$AOSModulePath").Delete() | Out-Null
-
-        if($error.count -eq 0) {
+        try {
+            (Get-Item "$AOSModulePath").Delete() | Out-Null
             Write-Host "  Removed symbolic link for model '$ModelFolder': $AOSModulePath" -ForegroundColor Green
-        } else {
+        } catch {
             Write-Host "  Failed to remove symbolic link for model '$ModelFolder': $AOSModulePath" -ForegroundColor Red
-            Write-Host "  Error: $($error)" -ForegroundColor Red
-            $error.clear()
+            Write-Host "  Error: $($_.Exception.Message)" -ForegroundColor Red
         }
     } else {
         Write-Host "  Model folder '$ModelFolder' is missing in AOS 'PackagesLocalDirectory' folder. Action is skipped." -ForegroundColor Yellow
