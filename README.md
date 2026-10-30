@@ -28,8 +28,8 @@ Each release contains the source archives and the model file for import with Mod
 ## Articles
 
 You can learn more about the solution here:
-- [Bulk Upload Attachments in D365FO with Docentric](https://ax.docentric.com/<to-be-published>) <!-- TODO: replace with the published URL -->
-- [Use the Docentric Bulk File Upload Control in Your Own D365FO Forms](https://ax.docentric.com/<to-be-published>) <!-- TODO: replace with the published URL -->
+- [Bulk Upload Attachments in D365FO with Docentric AX](https://ax.docentric.com/bulk-upload-attachments-in-d365fo-with-docentric-ax)
+- [Use the Docentric Bulk File Upload Control in Your Own D365FO Forms](https://ax.docentric.com/use-the-docentric-bulk-file-upload-control-in-your-own-d365fo-forms)
 
 ## Prerequisites
 
